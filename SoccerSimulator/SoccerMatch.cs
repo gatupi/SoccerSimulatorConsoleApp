@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace SoccerSimulator {
-    public class SoccerMatch {
+    class SoccerMatch {
 
-        public static void Play(SoccerTeam home, SoccerTeam away, int homeGoals, int awayGoals) {
+        public static void Play(SoccerChampionship championship, SoccerTeam home, SoccerTeam away, int homeGoals, int awayGoals) {
 
             if (home != null && away != null) {
 

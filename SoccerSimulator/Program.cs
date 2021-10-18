@@ -8,34 +8,34 @@ namespace SoccerSimulator {
                 SoccerChampionship c = new SoccerChampionship(6);
 
                 Console.WriteLine(c.Table());
-                SoccerMatch.Play(c.GetTeam(0), c.GetTeam(1), 2, 0);
-                SoccerMatch.Play(c.GetTeam(2), c.GetTeam(3), 1, 1);
-                SoccerMatch.Play(c.GetTeam(4), c.GetTeam(5), 3, 1);
+                SoccerMatch.Play(c, c.GetTeam(0), c.GetTeam(1), 2, 0);
+                SoccerMatch.Play(c, c.GetTeam(2), c.GetTeam(3), 1, 1);
+                SoccerMatch.Play(c, c.GetTeam(4), c.GetTeam(5), 3, 1);
                 c.Sort();
                 Console.WriteLine(c.Table());
 
-                SoccerMatch.Play(c.GetTeam(3), c.GetTeam(0), 3, 1);
-                SoccerMatch.Play(c.GetTeam(1), c.GetTeam(4), 3, 1);
-                SoccerMatch.Play(c.GetTeam(5), c.GetTeam(2), 3, 1);
+                SoccerMatch.Play(c, c.GetTeam(3), c.GetTeam(0), 3, 1);
+                SoccerMatch.Play(c, c.GetTeam(1), c.GetTeam(4), 3, 1);
+                SoccerMatch.Play(c, c.GetTeam(5), c.GetTeam(2), 3, 1);
                 c.Sort();
                 Console.WriteLine(c.Table());
 
-                SoccerMatch.Play(c.GetTeam(0), c.GetTeam(2), 4, 0);
-                SoccerMatch.Play(c.GetTeam(1), c.GetTeam(5), 2, 3);
-                SoccerMatch.Play(c.GetTeam(4), c.GetTeam(3), 3, 1);
+                SoccerMatch.Play(c, c.GetTeam(0), c.GetTeam(2), 4, 0);
+                SoccerMatch.Play(c, c.GetTeam(1), c.GetTeam(5), 2, 3);
+                SoccerMatch.Play(c, c.GetTeam(4), c.GetTeam(3), 3, 1);
                 c.Sort();
                 Console.WriteLine(c.Table());
 
-                SoccerMatch.Play(c.GetTeam(5), c.GetTeam(0), 2, 2);
-                SoccerMatch.Play(c.GetTeam(3), c.GetTeam(1), 2, 3);
-                SoccerMatch.Play(c.GetTeam(2), c.GetTeam(4), 3, 1);
+                SoccerMatch.Play(c, c.GetTeam(5), c.GetTeam(0), 2, 2);
+                SoccerMatch.Play(c, c.GetTeam(3), c.GetTeam(1), 2, 3);
+                SoccerMatch.Play(c, c.GetTeam(2), c.GetTeam(4), 3, 1);
                 c.Sort();
                 Console.WriteLine(c.Table());
 
-                SoccerMatch.Play(c.GetTeam(4), c.GetTeam(0), 1, 1);
-                SoccerMatch.Play(c.GetTeam(1), c.GetTeam(2), 2, 2);
-                SoccerMatch.Play(c.GetTeam(3), c.GetTeam(5), 3, 1);
-                SoccerMatch.Play(c.GetTeam(2), new SoccerTeam(), 20, 0); // resolver isso aqui! -> jogos externos ao campeonato influenciando na classificação do mesmo
+                SoccerMatch.Play(c, c.GetTeam(4), c.GetTeam(0), 1, 1);
+                SoccerMatch.Play(c, c.GetTeam(1), c.GetTeam(2), 2, 2);
+                SoccerMatch.Play(c, c.GetTeam(3), c.GetTeam(5), 3, 1);
+                SoccerMatch.Play(c, c.GetTeam(2), new SoccerTeam(), 20, 0); // resolver isso aqui! -> jogos externos ao campeonato influenciando na classificação do mesmo
                 c.Sort();
                 Console.WriteLine(c.Table());
 

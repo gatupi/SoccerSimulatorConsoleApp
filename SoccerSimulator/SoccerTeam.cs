@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace SoccerSimulator {
-    public class SoccerTeam : IComparable { // resolver o caso de poder jogar uma partida qualquer de um time que está em um campeonato
+    class SoccerTeam : IComparable { // resolver o caso de poder jogar uma partida qualquer de um time que está em um campeonato
 
         private string _name;
         private const string _defaultName = "Soccer Team";
