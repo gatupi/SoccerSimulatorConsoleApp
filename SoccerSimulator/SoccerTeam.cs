@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SoccerSimulator {
     class SoccerTeam : IComparable { // resolver o caso de poder jogar uma partida qualquer de um time que está em um campeonato
 
         private string _name;
+        private List<SoccerChampionship> _championships;
+
         private const string _defaultName = "Soccer Team";
         private static int _count = 0;
 
@@ -11,9 +14,10 @@ namespace SoccerSimulator {
 
         public SoccerTeam(string name) {
             Name = name;
-            AsHome = new SoccerMatch();
-            AsAway = new SoccerMatch();
-            Total = new SoccerMatch();
+            AsHome = new MatchRecords();
+            AsAway = new MatchRecords();
+            Total = new MatchRecords();
+            _championships = new List<SoccerChampionship>();
             _count++;
         }
 
@@ -24,20 +28,15 @@ namespace SoccerSimulator {
             }
         }
 
-        public SoccerMatch AsHome { get; private set; }
+        public MatchRecords AsHome { get; private set; }
 
-        public SoccerMatch AsAway { get; private set; }
+        public MatchRecords AsAway { get; private set; }
 
-        public SoccerMatch Total { get; private set; }
+        public MatchRecords Total { get; private set; }
 
         public int[] TieBreaker {
             get => new int[] { Total.Points, Total.Won, Total.GoalDifference, Total.GoalsFor };
-        }
-
-        public override string ToString() {
-            return
-                $"{Name}\n" + tableHeader() + recordsString(AsHome) + recordsString(AsAway) + recordsString(Total);
-        }
+        }     
 
         public int CompareTo(object team) {
 
@@ -57,7 +56,17 @@ namespace SoccerSimulator {
             return r;
         }
 
-        private string recordsString(SoccerMatch r) {
+        public void AddChampionship(SoccerChampionship championship) {
+            if (championship != null)
+                _championships.Add(championship);
+        }
+
+        public override string ToString() {
+            return
+                $"{Name}\n" + tableHeader() + recordsString(AsHome) + recordsString(AsAway) + recordsString(Total);
+        }
+
+        private string recordsString(MatchRecords r) {
 
             string row =
                 (r == AsHome ? "Home team" : (r == AsAway ? "Away team" : "Total")).PadRight(20) + " | ";

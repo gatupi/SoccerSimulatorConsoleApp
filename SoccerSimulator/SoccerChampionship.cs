@@ -17,6 +17,7 @@ namespace SoccerSimulator {
             _standings = new List<int>();
             for (int i = 0; i < numberOfTeams; i++) {
                 _teams.Add(new SoccerTeam());
+                _teams[i].AddChampionship(this);
                 _standings.Add(i);
             }                
         }

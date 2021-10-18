@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace SoccerSimulator {
-    class SoccerMatch {
+    class MatchRecords : IMatchRecords {
 
-        public static void Play(SoccerChampionship championship, SoccerTeam home, SoccerTeam away, int homeGoals, int awayGoals) {
+        public static void SoccerMatch(SoccerTeam home, SoccerTeam away, int homeGoals, int awayGoals) {
 
             if (home != null && away != null) {
 
@@ -40,9 +40,9 @@ namespace SoccerSimulator {
 
         private static void updateTeam(SoccerTeam team) {
 
-            SoccerMatch total = team.Total;
-            SoccerMatch home = team.AsHome;
-            SoccerMatch away = team.AsAway;
+            MatchRecords total = team.Total;
+            MatchRecords home = team.AsHome;
+            MatchRecords away = team.AsAway;
 
             total.Won = home.Won + away.Won;
             total.Drawn = home.Drawn + away.Drawn;
