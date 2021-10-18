@@ -19,16 +19,9 @@ namespace SoccerSimulator {
 
         public SoccerTeam GetTeam(int index) {
 
-            SoccerTeam team = null;
+            index = index < 0 ? 0 : (index >= _teams.Count ? _teams.Count - 1 : index);
 
-            try {
-                team = _teams[index];
-            }
-            catch (Exception e) {
-                Console.WriteLine(e);
-            }
-
-            return team;
+            return _teams[index];
         }
 
         public SoccerTeam GetTeam(string name) {
