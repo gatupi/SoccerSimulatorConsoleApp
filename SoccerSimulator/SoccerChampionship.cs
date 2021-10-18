@@ -6,6 +6,7 @@ namespace SoccerSimulator {
     class SoccerChampionship {
 
         private List<SoccerTeam> _teams;
+        private List<int> _standings;
 
         public SoccerChampionship(int numberOfTeams) {
 
@@ -13,8 +14,11 @@ namespace SoccerSimulator {
                 throw new SoccerException("A championship must have at least two teams!");
 
             _teams = new List<SoccerTeam>();
-            for (int i = 0; i < numberOfTeams; i++)
+            _standings = new List<int>();
+            for (int i = 0; i < numberOfTeams; i++) {
                 _teams.Add(new SoccerTeam());
+                _standings.Add(i);
+            }                
         }
 
         public string Table() {
@@ -22,7 +26,7 @@ namespace SoccerSimulator {
             string[] tableField = {
                 "Team", "Played", "Won", "Drawn", "Lost", "GF", "GA", "GD", "Points"
             };
-            int[] attr;         
+            int[] attr;
             string table = string.Empty;
             int length = tableField.Length;
             SoccerTeam r;
@@ -36,8 +40,8 @@ namespace SoccerSimulator {
                 table += i < length - 1 ? "-+-" : "\n";
             }
             for (int i = 0; i < _teams.Count; i++) {
-                r = _teams[i];
-                attr = new int[]{ r.Total.Played, r.Total.Won, r.Total.Drawn, r.Total.Lost, r.Total.GoalsFor, r.Total.GoalsAgainst, r.Total.GoalDifference, r.Total.Points };
+                r = _teams[_standings[i]];
+                attr = new int[] { r.Total.Played, r.Total.Won, r.Total.Drawn, r.Total.Lost, r.Total.GoalsFor, r.Total.GoalsAgainst, r.Total.GoalDifference, r.Total.Points };
                 table += r.Name.PadRight(20) + " | ";
                 for (int j = 0; j < attr.Length; j++) {
                     table += attr[j].ToString().PadLeft(7);
@@ -46,6 +50,10 @@ namespace SoccerSimulator {
             }
 
             return table;
+        }
+
+        public void Sort() {
+            _standings.Sort((x, y) => _teams[x].CompareTo(_teams[y]));
         }
 
         public SoccerTeam GetTeam(int index) {

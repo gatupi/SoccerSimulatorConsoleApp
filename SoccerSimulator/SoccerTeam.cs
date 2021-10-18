@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace SoccerSimulator {
-    public class SoccerTeam { // resolver o caso de poder jogar uma partida qualquer de um time que está em um campeonato
+    public class SoccerTeam : IComparable { // resolver o caso de poder jogar uma partida qualquer de um time que está em um campeonato
 
         private string _name;
         private const string _defaultName = "Soccer Team";
@@ -30,9 +30,31 @@ namespace SoccerSimulator {
 
         public SoccerMatch Total { get; private set; }
 
+        public int[] TieBreaker {
+            get => new int[] { Total.Points, Total.Won, Total.GoalDifference, Total.GoalsFor };
+        }
+
         public override string ToString() {
             return
                 $"{Name}\n" + tableHeader() + recordsString(AsHome) + recordsString(AsAway) + recordsString(Total);
+        }
+
+        public int CompareTo(object team) {
+
+            SoccerTeam _team = team as SoccerTeam;
+            int[] tbThis = TieBreaker;
+            int[] tbTeam = _team.TieBreaker;
+            int vThis = 0;
+            int vTeam = 0;
+            int r = 0;
+
+            for (int i = 0; i < tbThis.Length && r == 0; i++) {
+                vThis += tbThis[i];
+                vTeam += tbTeam[i];
+                r = vTeam.CompareTo(vThis);
+            }
+
+            return r;
         }
 
         private string recordsString(SoccerMatch r) {
