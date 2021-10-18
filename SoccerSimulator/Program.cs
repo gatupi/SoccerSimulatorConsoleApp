@@ -10,6 +10,8 @@ namespace SoccerSimulator {
                 Console.WriteLine(c.GetTeam(0) + "\n" + c.GetTeam(1));
                 Console.WriteLine(c.GetTeam("Soccer Team 10") == null);
                 Console.WriteLine(c.GetTeam(3));
+
+                Console.WriteLine(c.Table());
             }
             catch(SoccerException e) {
                 Console.WriteLine(e.Message);

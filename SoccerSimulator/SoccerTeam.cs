@@ -5,9 +5,6 @@ namespace SoccerSimulator {
 
         private string _name;
         private const string _defaultName = "Soccer Team";
-        private static readonly string[] _tableField = {
-            "Playing as", "Played", "Won", "Drawn", "Lost", "GF", "GA", "GD", "Points"
-        };
         private static int _count = 0;
 
         public SoccerTeam() : this(nextName()) { }
@@ -35,7 +32,7 @@ namespace SoccerSimulator {
 
         public override string ToString() {
             return
-                $"{Name}\n" + tableFields() + recordsString(AsHome) + recordsString(AsAway) + recordsString(Total);
+                $"{Name}\n" + tableHeader() + recordsString(AsHome) + recordsString(AsAway) + recordsString(Total);
         }
 
         private string recordsString(SoccerMatch r) {
@@ -53,24 +50,25 @@ namespace SoccerSimulator {
             return row;
         }
 
-        private string tableFields() {
+        private string tableHeader() {
 
-            string row = string.Empty;
-            int padding;
-            int length = _tableField.Length;
+            string[] tableField = {
+                "Playing as", "Played", "Won", "Drawn", "Lost", "GF", "GA", "GD", "Points"
+            };
+
+            string header = string.Empty;
+            int length = tableField.Length;
 
             for (int i = 0; i < length; i++) {
-                padding = i > 0 ? 7 : 20;
-                row += _tableField[i].PadRight(padding);
-                row += i < length - 1 ? " | " : "\n";
+                header += tableField[i].PadRight(i > 0 ? 7 : 20);
+                header += i < length - 1 ? " | " : "\n";
             }
             for (int i = 0; i < length; i++) {
-                padding = i > 0 ? 7 : 20;
-                row += string.Empty.PadRight(padding, '-');
-                row += i < length - 1 ? "-+-" : "\n";
+                header += string.Empty.PadRight(i > 0 ? 7 : 20, '-');
+                header += i < length - 1 ? "-+-" : "\n";
             }
 
-            return row;
+            return header;
         }
 
 
