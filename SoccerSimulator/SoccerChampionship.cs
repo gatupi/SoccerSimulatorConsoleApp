@@ -41,7 +41,16 @@ namespace SoccerSimulator {
             }
             for (int i = 0; i < _teams.Count; i++) {
                 r = _teams[_standings[i]];
-                attr = new int[] { r.Total.Played, r.Total.Won, r.Total.Drawn, r.Total.Lost, r.Total.GoalsFor, r.Total.GoalsAgainst, r.Total.GoalDifference, r.Total.Points };
+                attr = new int[] {
+                    r.Total.Played,
+                    r.Total.Won,
+                    r.Total.Drawn,
+                    r.Total.Lost,
+                    r.Total.GoalsFor,
+                    r.Total.GoalsAgainst,
+                    r.Total.GoalDifference,
+                    r.Total.Points
+                };
                 table += r.Name.PadRight(20) + " | ";
                 for (int j = 0; j < attr.Length; j++) {
                     table += attr[j].ToString().PadLeft(7);
