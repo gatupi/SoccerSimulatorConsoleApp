@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace SoccerSimulator {
     class Program {
@@ -7,30 +8,21 @@ namespace SoccerSimulator {
             try {
                 SoccerChampionship c = new SoccerChampionship(6);
 
-                Console.WriteLine(c.Table());
                 MatchRecords.SoccerMatch(c.GetTeam(0), c.GetTeam(1), 2, 0);
                 MatchRecords.SoccerMatch(c.GetTeam(2), c.GetTeam(3), 1, 1);
                 MatchRecords.SoccerMatch(c.GetTeam(4), c.GetTeam(5), 3, 1);
-                c.Sort();
-                Console.WriteLine(c.Table());
 
                 MatchRecords.SoccerMatch(c.GetTeam(3), c.GetTeam(0), 3, 1);
                 MatchRecords.SoccerMatch(c.GetTeam(1), c.GetTeam(4), 3, 1);
                 MatchRecords.SoccerMatch(c.GetTeam(5), c.GetTeam(2), 3, 1);
-                c.Sort();
-                Console.WriteLine(c.Table());
 
                 MatchRecords.SoccerMatch(c.GetTeam(0), c.GetTeam(2), 4, 0);
                 MatchRecords.SoccerMatch(c.GetTeam(1), c.GetTeam(5), 2, 3);
                 MatchRecords.SoccerMatch(c.GetTeam(4), c.GetTeam(3), 3, 1);
-                c.Sort();
-                Console.WriteLine(c.Table());
 
                 MatchRecords.SoccerMatch(c.GetTeam(5), c.GetTeam(0), 2, 2);
                 MatchRecords.SoccerMatch(c.GetTeam(3), c.GetTeam(1), 2, 3);
                 MatchRecords.SoccerMatch(c.GetTeam(2), c.GetTeam(4), 3, 1);
-                c.Sort();
-                Console.WriteLine(c.Table());
 
                 MatchRecords.SoccerMatch(c.GetTeam(4), c.GetTeam(0), 1, 1);
                 MatchRecords.SoccerMatch(c.GetTeam(1), c.GetTeam(2), 2, 2);
@@ -39,18 +31,13 @@ namespace SoccerSimulator {
                 c.Sort();
                 Console.WriteLine(c.Table());
 
-                Console.WriteLine(c.GetTeam(1));
-
-                List<int> l = new List<int> { 1, 3, 10, 6, 0, 8 };
-                printArray(l);
-                l.Sort((x, y) => y.CompareTo(x));
-                printArray(l);
+                for (int i = 0; i < c.NumberOfTeams; i++)
+                    Console.WriteLine(c.GetTeam(i));
 
             }
             catch (SoccerException e) {
                 Console.WriteLine(e.Message);
             }
-            Console.WriteLine("Teste!!");
         }
 
         static void printArray<T>(List<T> list) {

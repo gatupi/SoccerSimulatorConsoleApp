@@ -29,5 +29,9 @@ namespace SoccerSimulator {
         public int GoalsAgainst => AsHome.GoalsAgainst + AsAway.GoalsAgainst;
 
         public int GoalDifference => AsHome.GoalDifference + AsAway.GoalDifference;
+
+        public int[] TableOrder => new int[] { Played, Won, Drawn, Lost, GoalsFor, GoalsAgainst, GoalDifference, Points };
+
+        public string Csv => $"{Played},{Won},{Drawn},{Lost},{GoalsFor},{GoalsAgainst},{GoalDifference},{Points}";
     }
 }

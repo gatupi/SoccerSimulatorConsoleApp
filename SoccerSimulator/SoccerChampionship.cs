@@ -21,6 +21,8 @@ namespace SoccerSimulator {
             }                
         }
 
+        public int NumberOfTeams => _teams.Count;
+
         public string Table() {
 
             string[] tableField = {
@@ -41,16 +43,7 @@ namespace SoccerSimulator {
             }
             for (int i = 0; i < _teams.Count; i++) {
                 r = _teams[_standings[i]];
-                attr = new int[] {
-                    r.Record.Played,
-                    r.Record.Won,
-                    r.Record.Drawn,
-                    r.Record.Lost,
-                    r.Record.GoalsFor,
-                    r.Record.GoalsAgainst,
-                    r.Record.GoalDifference,
-                    r.Record.Points
-                };
+                attr = r.Record.TableOrder;
                 table += r.Name.PadRight(20) + " | ";
                 for (int j = 0; j < attr.Length; j++) {
                     table += attr[j].ToString().PadLeft(7);

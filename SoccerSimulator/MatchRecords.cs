@@ -35,9 +35,9 @@ namespace SoccerSimulator {
             }
         }
 
-        public int Points { get => Won * 3 + Drawn; }
+        public int Points => Won * 3 + Drawn;
 
-        public int Played { get => Won + Drawn + Lost; }
+        public int Played => Won + Drawn + Lost;
 
         public int Won { get; private set; }
 
@@ -49,7 +49,11 @@ namespace SoccerSimulator {
 
         public int GoalsAgainst { get; private set; }
 
-        public int GoalDifference { get => GoalsFor - GoalsAgainst; }
+        public int GoalDifference => GoalsFor - GoalsAgainst;
+
+        public int[] TableOrder => new int[] { Played, Won, Drawn, Lost, GoalsFor, GoalsAgainst, GoalDifference, Points };
+
+        public string Csv => $"{Played},{Won},{Drawn},{Lost},{GoalsFor},{GoalsAgainst},{GoalDifference},{Points}";
 
     }
 }
