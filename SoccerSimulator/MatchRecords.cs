@@ -15,40 +15,24 @@ namespace SoccerSimulator {
                 if (homeGoals < 0 || awayGoals < 0)
                     throw new SoccerException("A team cannot score negative goals!");
 
-                home.AsHome.GoalsFor += homeGoals;
-                home.AsHome.GoalsAgainst += awayGoals;
-                away.AsAway.GoalsFor += awayGoals;
-                away.AsAway.GoalsAgainst += homeGoals;
+                home.Record.AsHome.GoalsFor += homeGoals;
+                home.Record.AsHome.GoalsAgainst += awayGoals;
+                away.Record.AsAway.GoalsFor += awayGoals;
+                away.Record.AsAway.GoalsAgainst += homeGoals;
 
                 if (homeGoals > awayGoals) {
-                    home.AsHome.Won++;
-                    away.AsAway.Lost++;
+                    home.Record.AsHome.Won++;
+                    away.Record.AsAway.Lost++;
                 }
                 else if (awayGoals > homeGoals) {
-                    home.AsHome.Lost++;
-                    away.AsAway.Won++;
+                    home.Record.AsHome.Lost++;
+                    away.Record.AsAway.Won++;
                 }
                 else {
-                    home.AsHome.Drawn++;
-                    away.AsAway.Drawn++;
+                    home.Record.AsHome.Drawn++;
+                    away.Record.AsAway.Drawn++;
                 }
-
-                updateTeam(home);
-                updateTeam(away);
-            }           
-        }
-
-        private static void updateTeam(SoccerTeam team) {
-
-            MatchRecords total = team.Total;
-            MatchRecords home = team.AsHome;
-            MatchRecords away = team.AsAway;
-
-            total.Won = home.Won + away.Won;
-            total.Drawn = home.Drawn + away.Drawn;
-            total.Lost = home.Lost + away.Lost;
-            total.GoalsFor = home.GoalsFor + away.GoalsFor;
-            total.GoalsAgainst = home.GoalsAgainst + away.GoalsAgainst;
+            }
         }
 
         public int Points { get => Won * 3 + Drawn; }

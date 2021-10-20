@@ -5,7 +5,6 @@ namespace SoccerSimulator {
     class SoccerTeam : IComparable { // resolver o caso de poder jogar uma partida qualquer de um time que está em um campeonato
 
         private string _name;
-        private List<SoccerChampionship> _championships;
 
         private const string _defaultName = "Soccer Team";
         private static int _count = 0;
@@ -14,10 +13,7 @@ namespace SoccerSimulator {
 
         public SoccerTeam(string name) {
             Name = name;
-            AsHome = new MatchRecords();
-            AsAway = new MatchRecords();
-            Total = new MatchRecords();
-            _championships = new List<SoccerChampionship>();
+            Record = new DetaildMatchRecords();
             _count++;
         }
 
@@ -27,15 +23,10 @@ namespace SoccerSimulator {
                 _name = ValidateSoccerTeam.Name(value) ? value : nextName();
             }
         }
-
-        public MatchRecords AsHome { get; private set; }
-
-        public MatchRecords AsAway { get; private set; }
-
-        public MatchRecords Total { get; private set; }
+        public DetaildMatchRecords Record { get; private set; }
 
         public int[] TieBreaker {
-            get => new int[] { Total.Points, Total.Won, Total.GoalDifference, Total.GoalsFor };
+            get => new int[] { Record.Points, Record.Won, Record.GoalDifference, Record.GoalsFor };
         }     
 
         public int CompareTo(object team) {
@@ -54,52 +45,6 @@ namespace SoccerSimulator {
             }
 
             return r;
-        }
-
-        public void AddChampionship(SoccerChampionship championship) {
-            if (championship != null)
-                _championships.Add(championship);
-        }
-
-        public override string ToString() {
-            return
-                $"{Name}\n" + tableHeader() + recordsString(AsHome) + recordsString(AsAway) + recordsString(Total);
-        }
-
-        private string recordsString(MatchRecords r) {
-
-            string row =
-                (r == AsHome ? "Home team" : (r == AsAway ? "Away team" : "Total")).PadRight(20) + " | ";
-            int[] attr =
-                { r.Played, r.Won, r.Drawn, r.Lost, r.GoalsFor, r.GoalsAgainst, r.GoalDifference, r.Points };
-
-            for (int i = 0; i < attr.Length; i++) {
-                row += attr[i].ToString().PadLeft(7);
-                row += i < attr.Length - 1 ? " | " : "\n";
-            }
-
-            return row;
-        }
-
-        private string tableHeader() {
-
-            string[] tableField = {
-                "Playing as", "Played", "Won", "Drawn", "Lost", "GF", "GA", "GD", "Points"
-            };
-
-            string header = string.Empty;
-            int length = tableField.Length;
-
-            for (int i = 0; i < length; i++) {
-                header += tableField[i].PadRight(i > 0 ? 7 : 20);
-                header += i < length - 1 ? " | " : "\n";
-            }
-            for (int i = 0; i < length; i++) {
-                header += string.Empty.PadRight(i > 0 ? 7 : 20, '-');
-                header += i < length - 1 ? "-+-" : "\n";
-            }
-
-            return header;
         }
 
 

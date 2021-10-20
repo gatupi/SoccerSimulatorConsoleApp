@@ -17,7 +17,6 @@ namespace SoccerSimulator {
             _standings = new List<int>();
             for (int i = 0; i < numberOfTeams; i++) {
                 _teams.Add(new SoccerTeam());
-                _teams[i].AddChampionship(this);
                 _standings.Add(i);
             }                
         }
@@ -43,14 +42,14 @@ namespace SoccerSimulator {
             for (int i = 0; i < _teams.Count; i++) {
                 r = _teams[_standings[i]];
                 attr = new int[] {
-                    r.Total.Played,
-                    r.Total.Won,
-                    r.Total.Drawn,
-                    r.Total.Lost,
-                    r.Total.GoalsFor,
-                    r.Total.GoalsAgainst,
-                    r.Total.GoalDifference,
-                    r.Total.Points
+                    r.Record.Played,
+                    r.Record.Won,
+                    r.Record.Drawn,
+                    r.Record.Lost,
+                    r.Record.GoalsFor,
+                    r.Record.GoalsAgainst,
+                    r.Record.GoalDifference,
+                    r.Record.Points
                 };
                 table += r.Name.PadRight(20) + " | ";
                 for (int j = 0; j < attr.Length; j++) {
