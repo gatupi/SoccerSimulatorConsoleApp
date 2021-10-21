@@ -52,16 +52,20 @@ namespace SoccerSimulator {
 
             string tableField = "Playing as,Played,Won,Drawn,Lost,GF,GA,GD,Points";
             string width = "20,7,7,7,7,7,7,7,7";
+            string line = ConsoleDataGrid.DivisionLine(width, true);
+            StringBuilder table = new StringBuilder($"Records of {Name}\n");
 
-            return
-                $"Records of {Name}\n" +
-                ConsoleDataGrid.GridRow(tableField, width) +
-                ConsoleDataGrid.DivisionLine(width) +
-                ConsoleDataGrid.GridRow("Home team," + Record.AsHome.Csv, width) +
-                ConsoleDataGrid.GridRow("Away team," + Record.AsAway.Csv, width) +
-                ConsoleDataGrid.GridRow("Total," + Record.Csv, width);
+            table.Append(
+                line).Append(
+                ConsoleDataGrid.GridRow(tableField, width, true)).Append(
+                line).Append(
+                ConsoleDataGrid.GridRow("Home team," + Record.AsHome.Csv, width, true)).Append(
+                ConsoleDataGrid.GridRow("Away team," + Record.AsAway.Csv, width, true)).Append(
+                ConsoleDataGrid.GridRow("Total," + Record.Csv, width, true)).Append(
+                line);
+
+            return table.ToString();
         }
-
 
         private static string NextName() {
             return $"{_defaultName} {_count + 1}";
