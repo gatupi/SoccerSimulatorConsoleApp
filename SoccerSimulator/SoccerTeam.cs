@@ -64,7 +64,7 @@ namespace SoccerSimulator {
                 ConsoleDataGrid.GridRow("Total," + Record.Csv, width, true)).Append(
                 line);
 
-            return table.ToString();
+            return $"{table}";
         }
 
         private static string NextName() {

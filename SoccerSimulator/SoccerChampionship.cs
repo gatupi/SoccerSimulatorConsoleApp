@@ -55,7 +55,7 @@ namespace SoccerSimulator {
         }
 
         public void Sort() {
-            _standings.Sort((x, y) => _teams[x].CompareTo(_teams[y]));
+            _standings.Sort();
         }
 
         public SoccerTeam GetTeam(int index) {
