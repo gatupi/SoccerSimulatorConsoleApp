@@ -13,7 +13,7 @@ namespace SoccerSimulator {
             _championship = championship;
         }
 
-        public static void SoccerMatch(SoccerChampionship championship, SoccerTeam home, SoccerTeam away, int homeGoals, int awayGoals) {
+        public static void PlayMatch(SoccerChampionship championship, SoccerTeam home, SoccerTeam away, int homeGoals, int awayGoals) {
 
             if (home != null && away != null) {
 
@@ -67,11 +67,7 @@ namespace SoccerSimulator {
 
         public int GoalDifference => GoalsFor - GoalsAgainst;
 
-        public int[] TableOrder => new int[] { Played, Won, Drawn, Lost, GoalsFor, GoalsAgainst, GoalDifference, Points };
-
         public string Csv => $"{Played},{Won},{Drawn},{Lost},{GoalsFor},{GoalsAgainst},{GoalDifference},{Points}";
-
-        public static MatchRecords operator +(MatchRecords a) => a;
 
         public static MatchRecords operator +(MatchRecords a, MatchRecords b) =>
             new MatchRecords {
