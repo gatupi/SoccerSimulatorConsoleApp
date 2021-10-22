@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace SoccerSimulator {
-    class DetaildMatchRecords : IMatchRecords {
+    class DetailedMatchRecords : IMatchRecords {
 
-        public DetaildMatchRecords() {
+        public DetailedMatchRecords() {
             AsHome = new MatchRecords();
             AsAway = new MatchRecords();
         }
