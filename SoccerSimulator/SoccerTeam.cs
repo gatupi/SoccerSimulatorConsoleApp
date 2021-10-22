@@ -14,7 +14,7 @@ namespace SoccerSimulator {
 
         public SoccerTeam(string name) {
             Name = name;
-            Record = new DetaildMatchRecords();
+            Record = new DetailedMatchRecords();
             _count++;
         }
 
@@ -24,17 +24,17 @@ namespace SoccerSimulator {
                 _name = ValidateSoccerTeam.Name(value) ? value : NextName();
             }
         }
-        public DetaildMatchRecords Record { get; private set; }
+        public DetailedMatchRecords Record { get; private set; }
 
-        public int[] TieBreaker {
+        public int[] TieBreakerList {
             get => new int[] { Record.Points, Record.Won, Record.GoalDifference, Record.GoalsFor };
         }
 
         public int CompareTo(object team) {
 
             SoccerTeam _team = team as SoccerTeam;
-            int[] tbThis = TieBreaker;
-            int[] tbTeam = _team.TieBreaker;
+            int[] tbThis = TieBreakerList;
+            int[] tbTeam = _team.TieBreakerList;
             int vThis = 0;
             int vTeam = 0;
             int r = 0;
