@@ -7,7 +7,7 @@ namespace SoccerSimulator {
 
         SoccerChampionship _championship;
 
-        public DetailedMatchRecords() { }
+        public DetailedMatchRecords() : this(null) { }
 
         public DetailedMatchRecords(SoccerChampionship championship) {
             _championship = championship;

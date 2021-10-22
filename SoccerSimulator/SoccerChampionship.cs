@@ -8,6 +8,19 @@ namespace SoccerSimulator {
         private List<SoccerTeam> _teams;
         private List<int> _standings;
 
+        public SoccerChampionship(params SoccerTeam[] teams) {
+            if (teams == null)
+                throw new ArgumentNullException($"Parameter '{nameof(teams)}' cannot be null!");
+
+            if (teams.Length < 2)
+                throw new SoccerException("A championship must have at least two teams!");
+
+            _teams = new List<SoccerTeam>(teams);
+
+            foreach (SoccerTeam t in _teams)
+                t.AddChampionshipRecord(this);
+        }
+
         public SoccerChampionship(int numberOfTeams) {
 
             if (numberOfTeams < 2)
@@ -18,6 +31,7 @@ namespace SoccerSimulator {
             for (int i = 0; i < numberOfTeams; i++) {
                 _teams.Add(new SoccerTeam());
                 _standings.Add(i);
+                _teams[i].AddChampionshipRecord(this);
             }
         }
 
@@ -68,6 +82,10 @@ namespace SoccerSimulator {
         public SoccerTeam GetTeam(string name) {
 
             return _teams.Find(t => t.Name == name);
+        }
+
+        public bool HasRegistered(SoccerTeam team) {
+            return _teams.Find(t => t == team) != null;
         }
     }
 }

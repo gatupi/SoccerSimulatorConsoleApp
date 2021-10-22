@@ -7,13 +7,13 @@ namespace SoccerSimulator {
 
         SoccerChampionship _championship;
 
-        public MatchRecords() { }
+        public MatchRecords() : this(null) { }
 
         public MatchRecords(SoccerChampionship championship) {
             _championship = championship;
         }
 
-        public static void SoccerMatch(SoccerTeam home, SoccerTeam away, int homeGoals, int awayGoals) {
+        public static void SoccerMatch(SoccerChampionship championship, SoccerTeam home, SoccerTeam away, int homeGoals, int awayGoals) {
 
             if (home != null && away != null) {
 
@@ -23,22 +23,28 @@ namespace SoccerSimulator {
                 if (homeGoals < 0 || awayGoals < 0)
                     throw new SoccerException("A team cannot score negative goals!");
 
-                home.Records.AsHome.GoalsFor += homeGoals;
-                home.Records.AsHome.GoalsAgainst += awayGoals;
-                away.Records.AsAway.GoalsFor += awayGoals;
-                away.Records.AsAway.GoalsAgainst += homeGoals;
+                if (!championship.HasRegistered(home) || !championship.HasRegistered(away))
+                    throw new SoccerException("One of the teams is not registered in this championship!");
+
+                MatchRecords homeRecords = home.RecordsFrom(championship).AsHome;
+                MatchRecords awayRecords = away.RecordsFrom(championship).AsAway;
+
+                homeRecords.GoalsFor += homeGoals;
+                homeRecords.GoalsAgainst += awayGoals;
+                awayRecords.GoalsFor += awayGoals;
+                awayRecords.GoalsAgainst += homeGoals;
 
                 if (homeGoals > awayGoals) {
-                    home.Records.AsHome.Won++;
-                    away.Records.AsAway.Lost++;
+                    homeRecords.Won++;
+                    awayRecords.Lost++;
                 }
                 else if (awayGoals > homeGoals) {
-                    home.Records.AsHome.Lost++;
-                    away.Records.AsAway.Won++;
+                    homeRecords.Lost++;
+                    awayRecords.Won++;
                 }
                 else {
-                    home.Records.AsHome.Drawn++;
-                    away.Records.AsAway.Drawn++;
+                    homeRecords.Drawn++;
+                    awayRecords.Drawn++;
                 }
             }
         }
@@ -69,7 +75,7 @@ namespace SoccerSimulator {
 
         public static MatchRecords operator +(MatchRecords a, MatchRecords b) =>
             new MatchRecords {
-                Won = a.Played + b.Played,
+                Won = a.Won + b.Won,
                 Drawn = a.Drawn + b.Drawn,
                 Lost = a.Lost + b.Lost,
                 GoalsFor = a.GoalsFor + b.GoalsFor,

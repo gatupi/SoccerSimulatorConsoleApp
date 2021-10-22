@@ -37,6 +37,11 @@ namespace SoccerSimulator {
             }
         }
 
+        public void AddChampionshipRecord(SoccerChampionship championship) {
+            if (championship != null && championship.HasRegistered(this))
+                _records.Add(new DetailedMatchRecords(championship));
+        }
+
         public DetailedMatchRecords RecordsFrom(SoccerChampionship championship) {
             return _records.Find(r => r.Championship == championship);
         }
