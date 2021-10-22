@@ -3,35 +3,38 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace SoccerSimulator {
-    class DetailedMatchRecords : IMatchRecords {
+    class DetailedMatchRecords {
 
-        public DetailedMatchRecords() {
-            AsHome = new MatchRecords();
-            AsAway = new MatchRecords();
+        SoccerChampionship _championship;
+
+        public DetailedMatchRecords() { }
+
+        public DetailedMatchRecords(SoccerChampionship championship) {
+            _championship = championship;
+            AsHome = new MatchRecords(championship);
+            AsAway = new MatchRecords(championship);
         }
 
         public MatchRecords AsHome { get; private set; }
 
         public MatchRecords AsAway { get; private set; }
 
-        public int Points => AsHome.Points + AsAway.Points;
+        public MatchRecords Total => AsHome + AsAway;
 
-        public int Played => AsHome.Played + AsAway.Played;
+        public SoccerChampionship Championship => _championship;
 
-        public int Won => AsHome.Won + AsAway.Won;
+        public int[] TableOrder =>
+            new int[] { Total.Played, Total.Won, Total.Drawn, Total.Lost, Total.GoalsFor, Total.GoalsAgainst, Total.GoalDifference, Total.Points };
 
-        public int Drawn => AsHome.Drawn + AsAway.Drawn;
+        public string Csv =>
+            $"{Total.Played},{Total.Won},{Total.Drawn},{Total.Lost},{Total.GoalsFor},{Total.GoalsAgainst},{Total.GoalDifference},{Total.Points}";
 
-        public int Lost => AsHome.Lost + AsAway.Lost;
+        public static DetailedMatchRecords operator +(DetailedMatchRecords a) => a;
 
-        public int GoalsFor => AsHome.GoalsFor + AsAway.GoalsFor;
-
-        public int GoalsAgainst => AsHome.GoalsAgainst + AsAway.GoalsAgainst;
-
-        public int GoalDifference => AsHome.GoalDifference + AsAway.GoalDifference;
-
-        public int[] TableOrder => new int[] { Played, Won, Drawn, Lost, GoalsFor, GoalsAgainst, GoalDifference, Points };
-
-        public string Csv => $"{Played},{Won},{Drawn},{Lost},{GoalsFor},{GoalsAgainst},{GoalDifference},{Points}";
+        public static DetailedMatchRecords operator +(DetailedMatchRecords a, DetailedMatchRecords b) =>
+            new DetailedMatchRecords {
+                AsHome = a.AsHome + b.AsHome,
+                AsAway = a.AsAway + b.AsAway
+            };
     }
 }

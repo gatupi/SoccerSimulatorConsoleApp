@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Text;
 using SoccerSimulator.Utilities;
+using System.Collections.Generic;
 
 namespace SoccerSimulator {
     class SoccerTeam : IComparable { // resolver o caso de poder jogar uma partida qualquer de um time que está em um campeonato
 
         private string _name;
+        private List<DetailedMatchRecords> _records;
 
         private const string _defaultName = "Soccer Team";
         private static int _count = 0;
@@ -14,7 +16,7 @@ namespace SoccerSimulator {
 
         public SoccerTeam(string name) {
             Name = name;
-            Record = new DetailedMatchRecords();
+            _records = new List<DetailedMatchRecords>();
             _count++;
         }
 
@@ -24,10 +26,23 @@ namespace SoccerSimulator {
                 _name = ValidateSoccerTeam.Name(value) ? value : NextName();
             }
         }
-        public DetailedMatchRecords Record { get; private set; }
+        public DetailedMatchRecords Records {
+            get {
+                DetailedMatchRecords dmr = new DetailedMatchRecords();
+
+                foreach (DetailedMatchRecords d in _records)
+                    dmr += d;
+
+                return dmr;
+            }
+        }
+
+        public DetailedMatchRecords RecordsFrom(SoccerChampionship championship) {
+            return _records.Find(r => r.Championship == championship);
+        }
 
         public int[] TieBreakerList {
-            get => new int[] { Record.Points, Record.Won, Record.GoalDifference, Record.GoalsFor };
+            get => new int[] { Records.Total.Points, Records.Total.Won, Records.Total.GoalDifference, Records.Total.GoalsFor };
         }
 
         public int CompareTo(object team) {
@@ -59,9 +74,9 @@ namespace SoccerSimulator {
                 line).Append(
                 ConsoleDataGrid.GridRow(tableField, width, true)).Append(
                 line).Append(
-                ConsoleDataGrid.GridRow("Home team," + Record.AsHome.Csv, width, true)).Append(
-                ConsoleDataGrid.GridRow("Away team," + Record.AsAway.Csv, width, true)).Append(
-                ConsoleDataGrid.GridRow("Total," + Record.Csv, width, true)).Append(
+                ConsoleDataGrid.GridRow("Home team," + Records.AsHome.Csv, width, true)).Append(
+                ConsoleDataGrid.GridRow("Away team," + Records.AsAway.Csv, width, true)).Append(
+                ConsoleDataGrid.GridRow("Total," + Records.Csv, width, true)).Append(
                 line);
 
             return $"{table}";

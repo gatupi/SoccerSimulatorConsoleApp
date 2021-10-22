@@ -5,6 +5,14 @@ using System.Text;
 namespace SoccerSimulator {
     class MatchRecords : IMatchRecords {
 
+        SoccerChampionship _championship;
+
+        public MatchRecords() { }
+
+        public MatchRecords(SoccerChampionship championship) {
+            _championship = championship;
+        }
+
         public static void SoccerMatch(SoccerTeam home, SoccerTeam away, int homeGoals, int awayGoals) {
 
             if (home != null && away != null) {
@@ -15,25 +23,27 @@ namespace SoccerSimulator {
                 if (homeGoals < 0 || awayGoals < 0)
                     throw new SoccerException("A team cannot score negative goals!");
 
-                home.Record.AsHome.GoalsFor += homeGoals;
-                home.Record.AsHome.GoalsAgainst += awayGoals;
-                away.Record.AsAway.GoalsFor += awayGoals;
-                away.Record.AsAway.GoalsAgainst += homeGoals;
+                home.Records.AsHome.GoalsFor += homeGoals;
+                home.Records.AsHome.GoalsAgainst += awayGoals;
+                away.Records.AsAway.GoalsFor += awayGoals;
+                away.Records.AsAway.GoalsAgainst += homeGoals;
 
                 if (homeGoals > awayGoals) {
-                    home.Record.AsHome.Won++;
-                    away.Record.AsAway.Lost++;
+                    home.Records.AsHome.Won++;
+                    away.Records.AsAway.Lost++;
                 }
                 else if (awayGoals > homeGoals) {
-                    home.Record.AsHome.Lost++;
-                    away.Record.AsAway.Won++;
+                    home.Records.AsHome.Lost++;
+                    away.Records.AsAway.Won++;
                 }
                 else {
-                    home.Record.AsHome.Drawn++;
-                    away.Record.AsAway.Drawn++;
+                    home.Records.AsHome.Drawn++;
+                    away.Records.AsAway.Drawn++;
                 }
             }
         }
+
+        public SoccerChampionship Championship => _championship;
 
         public int Points => Won * 3 + Drawn;
 
@@ -55,5 +65,15 @@ namespace SoccerSimulator {
 
         public string Csv => $"{Played},{Won},{Drawn},{Lost},{GoalsFor},{GoalsAgainst},{GoalDifference},{Points}";
 
+        public static MatchRecords operator +(MatchRecords a) => a;
+
+        public static MatchRecords operator +(MatchRecords a, MatchRecords b) =>
+            new MatchRecords {
+                Won = a.Played + b.Played,
+                Drawn = a.Drawn + b.Drawn,
+                Lost = a.Lost + b.Lost,
+                GoalsFor = a.GoalsFor + b.GoalsFor,
+                GoalsAgainst = a.GoalsAgainst + b.GoalsAgainst
+            };
     }
 }

@@ -18,7 +18,7 @@ namespace SoccerSimulator {
             for (int i = 0; i < numberOfTeams; i++) {
                 _teams.Add(new SoccerTeam());
                 _standings.Add(i);
-            }                
+            }
         }
 
         public int NumberOfTeams => _teams.Count;
@@ -43,7 +43,7 @@ namespace SoccerSimulator {
             }
             for (int i = 0; i < _teams.Count; i++) {
                 r = _teams[_standings[i]];
-                attr = r.Record.TableOrder;
+                attr = r.Records.TableOrder;
                 table += r.Name.PadRight(20) + " | ";
                 for (int j = 0; j < attr.Length; j++) {
                     table += attr[j].ToString().PadLeft(7);
@@ -55,7 +55,7 @@ namespace SoccerSimulator {
         }
 
         public void Sort() {
-            _standings.Sort();
+            _standings.Sort((a, b) => _teams[a].CompareTo(_teams[b]));
         }
 
         public SoccerTeam GetTeam(int index) {
