@@ -15,7 +15,7 @@ namespace SoccerSimulator {
 
         public static void PlayMatch(SoccerChampionship championship, SoccerTeam home, SoccerTeam away, int homeGoals, int awayGoals) {
 
-            if (home != null && away != null) {
+            if (championship != null && home != null && away != null) {
 
                 if (home == away)
                     throw new SoccerException("A team cannot play against itself!");
