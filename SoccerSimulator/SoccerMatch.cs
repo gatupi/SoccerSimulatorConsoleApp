@@ -35,11 +35,11 @@ namespace SoccerSimulator {
 
         public SoccerTeam Away { get; }
 
-        public int HomeGoals { get; }
+        public virtual int HomeGoals { get; }
 
-        public int AwayGoals { get; }
+        public virtual int AwayGoals { get; }
 
-        public SoccerTeam Winner => HomeGoals == AwayGoals ? null : (HomeGoals > AwayGoals ? Home : Away);
+        public virtual SoccerTeam Winner => HomeGoals == AwayGoals ? null : (HomeGoals > AwayGoals ? Home : Away);
 
         public bool HasWinner => Winner != null;
 
@@ -66,36 +66,100 @@ namespace SoccerSimulator {
                 !(homeGoals == null || awayGoals == null);
         }
 
-    }
+        public static string SumOfScoreboards(string scoreboard_1, string scoreboard_2) {
 
-    class Playoff {
+            bool vsb_1 = ValidateScoreboard(scoreboard_1);
+            bool vsb_2 = ValidateScoreboard(scoreboard_2);
 
-        public Playoff(SoccerMatch regularTime, string penalties) {
+            if (!vsb_1 && !vsb_2)
+                return null;
 
-            if (regularTime == null)
-                throw new ArgumentNullException();
+            if (vsb_1 && scoreboard_2 == null)
+                return scoreboard_1;
 
-            RegularTime = regularTime;
+            if (vsb_2 && scoreboard_1 == null)
+                return scoreboard_2;
 
-            if (penalties != null) {
-                if (regularTime.HasWinner)
-                    throw new SoccerException("A play-off cannot have a penalty decision if there is a winner at the regular time!");
+            if (vsb_1 && vsb_2) {
+                string[] goals_1 = scoreboard_1.Split('-');
+                string[] goals_2 = scoreboard_2.Split('-');
+                int homeGoals = int.Parse(goals_1[0]) + int.Parse(goals_2[0]);
+                int awayGoals = int.Parse(goals_1[1]) + int.Parse(goals_2[1]);
 
-                else if (!SoccerMatch.ValidateScoreboard(penalties))
-                    throw new FormatException("Invalid format for penalties!");
+                return $"{homeGoals}-{awayGoals}";
             }
 
-            if (!regularTime.HasWinner)
-                throw new SoccerException("A play-off whose regular time ends in a draw must have a penalty decision!");
-
-            Penalties = new SoccerMatch(regularTime.Championship, regularTime.Home, regularTime.Away, penalties);
-
-            if (!Penalties.HasWinner)
-                throw new SoccerException("A play-off that extends to a penalty decision cannot have a penalty scoreboard defined as a draw!");
+            return null;
         }
 
-        public SoccerMatch RegularTime { get; }
+    }
 
-        public SoccerMatch Penalties { get; }
+    class NoOvertimePlayoff : SoccerMatch {
+
+        public NoOvertimePlayoff(SoccerChampionship championship, SoccerTeam home, SoccerTeam away, string regularTime, string penalties = null) :
+            base(championship, home, away, regularTime) {
+
+            if (penalties != null) {
+                if (HasWinner)
+                    throw new SoccerException("A play-off cannot have a penalty decision if there is a winner at the regular time!");
+
+                else if (!ValidateScoreboard(penalties))
+                    throw new FormatException("Invalid format for penalties!");
+
+                else {
+                    string[] penaltiesResult = penalties.Split('-');
+                    HomeGoalsAtPenalties = int.Parse(penaltiesResult[0]);
+                    AwayGoalsAtPenalties = int.Parse(penaltiesResult[1]);
+
+                    if (HomeGoalsAtPenalties == AwayGoalsAtPenalties)
+                        throw new SoccerException("A play-off that extends to a penalty decision cannot have a penalty scoreboard resulting in a draw!");
+                }
+            }
+            else if (!HasWinner)
+                throw new SoccerException("A play-off whose regular time and overtime end in a draw must have a penalty decision!");
+        }
+
+        public virtual int HomeGoalsAtRegularTime => HomeGoals;
+
+        public virtual int AwayGoalsAtRegularTime => AwayGoals;
+
+        public int? HomeGoalsAtPenalties { get; }
+
+        public int? AwayGoalsAtPenalties { get; }
+
+        public override SoccerTeam Winner {
+            get {
+                SoccerTeam winner = base.Winner;
+                if (winner == null)
+                    return HomeGoalsAtPenalties > AwayGoalsAtPenalties ? Home : Away;
+                return winner;
+            }
+        }
+    }
+
+    class Playoff : NoOvertimePlayoff {
+
+        public Playoff(SoccerChampionship championship, SoccerTeam home, SoccerTeam away, string regularTime) :
+            this(championship, home, away, regularTime, null) {
+        
+        }
+
+        public Playoff(SoccerChampionship championship, SoccerTeam home, SoccerTeam away, string regularTime, string overtime, string penalties = null)
+            : base(championship, home, away, SumOfScoreboards(regularTime, overtime), penalties) {
+
+            if (overtime != null) {
+                string[] overtimeResult = overtime.Split('-');
+                HomeGoalsAtOvertime = int.Parse(overtimeResult[0]);
+                AwayGoalsAtOvertime = int.Parse(overtimeResult[1]);
+            }
+        }
+
+        public override int HomeGoalsAtRegularTime => HomeGoals - HomeGoalsAtOvertime ?? HomeGoals;
+
+        public override int AwayGoalsAtRegularTime => AwayGoals - AwayGoalsAtOvertime ?? AwayGoals;
+
+        public int? HomeGoalsAtOvertime { get; }
+
+        public int? AwayGoalsAtOvertime { get; }
     }
 }
