@@ -68,8 +68,7 @@ namespace SoccerSimulator {
             return r;
         }
 
-        public override string ToString() {
-
+        public string TableString() {
             string tableField = "Playing as,Played,Won,Drawn,Lost,GF,GA,GD,Points";
             string width = "20,7,7,7,7,7,7,7,7";
             string line = ConsoleDataGrid.DivisionLine(width, true);
@@ -85,6 +84,10 @@ namespace SoccerSimulator {
                 line);
 
             return $"{table}";
+        }
+
+        public override string ToString() {
+            return TableString();
         }
 
         private static string NextName() {

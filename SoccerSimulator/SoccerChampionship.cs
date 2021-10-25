@@ -5,8 +5,7 @@ using System.Text;
 namespace SoccerSimulator {
     class SoccerChampionship {
 
-        private List<SoccerTeam> _teams;
-        private List<int> _standings;
+        private readonly List<int> _standings;
 
         public SoccerChampionship(params SoccerTeam[] teams) {
             if (teams == null)
@@ -15,9 +14,9 @@ namespace SoccerSimulator {
             if (teams.Length < 2)
                 throw new SoccerException("A championship must have at least two teams!");
 
-            _teams = new List<SoccerTeam>(teams);
+            Teams = new List<SoccerTeam>(teams);
 
-            foreach (SoccerTeam t in _teams)
+            foreach (SoccerTeam t in Teams)
                 t.AddChampionshipRecord(this);
         }
 
@@ -26,18 +25,20 @@ namespace SoccerSimulator {
             if (numberOfTeams < 2)
                 throw new SoccerException("A championship must have at least two teams!");
 
-            _teams = new List<SoccerTeam>();
+            Teams = new List<SoccerTeam>();
             _standings = new List<int>();
             for (int i = 0; i < numberOfTeams; i++) {
-                _teams.Add(new SoccerTeam());
+                Teams.Add(new SoccerTeam());
                 _standings.Add(i);
-                _teams[i].AddChampionshipRecord(this);
+                Teams[i].AddChampionshipRecord(this);
             }
         }
 
-        public int NumberOfTeams => _teams.Count;
+        public List<SoccerTeam> Teams { get; private set; }
 
-        public string Table() {
+        public int NumberOfTeams => Teams.Count;
+
+        public string TableString() {
 
             string[] tableField = {
                 "Team", "Played", "Won", "Drawn", "Lost", "GF", "GA", "GD", "Points"
@@ -55,8 +56,8 @@ namespace SoccerSimulator {
                 table += string.Empty.PadRight(i > 0 ? 7 : 20, '-');
                 table += i < length - 1 ? "-+-" : "\n";
             }
-            for (int i = 0; i < _teams.Count; i++) {
-                r = _teams[_standings[i]];
+            for (int i = 0; i < Teams.Count; i++) {
+                r = Teams[_standings[i]];
                 attr = r.Records.TableOrder;
                 table += r.Name.PadRight(20) + " | ";
                 for (int j = 0; j < attr.Length; j++) {
@@ -69,23 +70,23 @@ namespace SoccerSimulator {
         }
 
         public void Sort() {
-            _standings.Sort((a, b) => _teams[a].CompareTo(_teams[b]));
+            _standings.Sort((a, b) => Teams[a].CompareTo(Teams[b]));
         }
 
         public SoccerTeam GetTeam(int index) {
 
-            index = index < 0 ? 0 : (index >= _teams.Count ? _teams.Count - 1 : index);
+            index = index < 0 ? 0 : (index >= Teams.Count ? Teams.Count - 1 : index);
 
-            return _teams[index];
+            return Teams[index];
         }
 
         public SoccerTeam GetTeam(string name) {
 
-            return _teams.Find(t => t.Name == name);
+            return Teams.Find(t => t.Name == name);
         }
 
         public bool HasRegistered(SoccerTeam team) {
-            return _teams.Find(t => t == team) != null;
+            return Teams.Find(t => t == team) != null;
         }
     }
 }

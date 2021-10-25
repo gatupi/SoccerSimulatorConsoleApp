@@ -29,7 +29,7 @@ namespace SoccerSimulator {
                 MatchRecords.PlayMatch(c, c.GetTeam(3), c.GetTeam(5), 3, 1);
                 // MatchRecords.SoccerMatch(c, c.GetTeam(2), new SoccerTeam(), 20, 0); // resolver isso aqui! -> jogos externos ao campeonato influenciando na classificação do mesmo
                 c.Sort();
-                Console.WriteLine(c.Table());
+                Console.WriteLine(c.TableString());
 
                 for (int i = 0; i < c.NumberOfTeams; i++)
                     Console.WriteLine(c.GetTeam(i));
